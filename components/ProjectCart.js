@@ -1,7 +1,12 @@
+// ProjectCart.js
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { setProjects } from '../store';
 
 const ProjectCart = () => {
+  const dispatch = useDispatch();
+  const projects = useSelector((state) => state.projects.projects);
   const [formData, setFormData] = useState({
     author: '',
     category: '',
@@ -12,10 +17,9 @@ const ProjectCart = () => {
     image: '',
     tags: '',
   });
-  const [projects, setProjects] = useState([]);
   const [editingProject, setEditingProject] = useState(null);
-  const [comment, setComment] = useState(''); // Yorum için değişken
-  const [showCommentInput, setShowCommentInput] = useState({}); // Yorum alanını kontrol etmek için
+  const [comment, setComment] = useState('');
+  const [showCommentInput, setShowCommentInput] = useState({});
 
   useEffect(() => {
     fetchProjects();
@@ -25,7 +29,7 @@ const ProjectCart = () => {
   const fetchProjects = async () => {
     try {
       const response = await axios.get('http://localhost:3001/api/projects');
-      setProjects(response.data);
+      dispatch(setProjects(response.data)); // Redux'a projeleri yükle
     } catch (error) {
       console.error('Projeleri yüklerken hata:', error);
     }
@@ -49,21 +53,19 @@ const ProjectCart = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formDataToSend = new FormData();
-
     for (const key in formData) {
       formDataToSend.append(key, formData[key]);
     }
-
+    
     try {
       if (editingProject) {
-        // Güncelleme işlemi
-        await axios.put(`http://localhost:3001/api/projects/${editingProject}`, formDataToSend);
+        const response = await axios.put(`http://localhost:3001/api/projects/${editingProject}`, formDataToSend);
+        dispatch({ type: 'UPDATE_PROJECT', payload: response.data });
         setEditingProject(null);
       } else {
-        // Yeni proje ekleme işlemi
-        await axios.post('http://localhost:3001/api/projects', formDataToSend);
+        const response = await axios.post('http://localhost:3001/api/projects', formDataToSend);
+        dispatch({ type: 'ADD_PROJECT', payload: response.data });
       }
-      fetchProjects();
       setFormData({
         author: '',
         category: '',
@@ -86,17 +88,17 @@ const ProjectCart = () => {
       title: project.title,
       content: project.content,
       link: project.link,
-      file: project.file,
+      file: null, // dosya bilgisi güncellenmeyecek
       image: project.image,
-      tags: project.tags.join(', '), // Etiketleri virgülle ayırarak birleştir
+      tags: project.tags.join(', '),
     });
-    setEditingProject(project._id); // Düzenleme moduna geç
+    setEditingProject(project._id);
   };
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:3001/api/projects/${id}`);
-      fetchProjects();
+      dispatch({ type: 'DELETE_PROJECT', payload: id });
     } catch (error) {
       console.error('Proje silerken hata:', error);
     }
@@ -120,14 +122,14 @@ const ProjectCart = () => {
   const toggleCommentInput = (projectId) => {
     setShowCommentInput((prev) => ({
       ...prev,
-      [projectId]: !prev[projectId], // Yorum alanını aç/kapat
+      [projectId]: !prev[projectId],
     }));
   };
 
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Proje Paylaşım Alanı</h1>
-      <form onSubmit={handleSubmit} className="mb-8 p-6 border rounded-lg shadow-lg bg-white dark:bg-gray-900 dark:text-white">
+      <form onSubmit={handleSubmit} className="mb-8 p-6 border rounded-lg shadow-lg bg-white dark:bg-gray-900">
         <input
           type="text"
           name="author"
@@ -166,7 +168,7 @@ const ProjectCart = () => {
         <input
           type="text"
           name="link"
-          placeholder="Proje Linki"
+          placeholder="Proje Bağlantısı"
           value={formData.link}
           onChange={handleChange}
           className="w-full p-2 mb-4 border rounded"
@@ -175,7 +177,7 @@ const ProjectCart = () => {
           type="file"
           name="file"
           onChange={handleFileChange}
-          className="w-full p-2 mb-4 border rounded"
+          className="w-full mb-4"
         />
         <input
           type="text"
@@ -193,7 +195,7 @@ const ProjectCart = () => {
           onChange={handleChange}
           className="w-full p-2 mb-4 border rounded"
         />
-        <button type="submit" className="w-40 p-2 justify-between bg-blue-500 text-white rounded hover:bg-blue-600">
+        <button type="submit" className="w-40 p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
           {editingProject ? 'Projeyi Güncelle' : 'Projeyi Ekle'}
         </button>
       </form>
@@ -250,17 +252,17 @@ const ProjectCart = () => {
                 Yorum
               </button>
               <span className="ml-2 text-sm text-gray-500">{project.comments.length} Yorum</span>
-              </div>
+            </div>
 
-              {showCommentInput[project._id] && (
-                <div className="mt-4">
-                  <form onSubmit={(e) => handleCommentSubmit(project._id, e)} className="flex items-center">
+            {showCommentInput[project._id] && (
+              <div className="mt-4">
+                <form onSubmit={(e) => handleCommentSubmit(project._id, e)} className="flex items-center">
                   <input
                     type="text"
                     value={comment}
                     onChange={handleCommentChange}
                     placeholder="Yorumunuzu yazın..."
-                    className="flex-1 p-2 border rounded"
+                    className="flex-1 p-2 border rounded dark:text-black"
                     required
                   />
                   <button type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 ml-2">
@@ -268,8 +270,9 @@ const ProjectCart = () => {
                   </button>
                 </form>
                 </div>
-              )}
-              {/* Yorumları Listele */}
+            )}
+
+            {/* Yorumları Listele */}
             <div className="mt-4">
               {project.comments.map((comment) => (
                 <div key={comment._id} className="p-2 border-b">
@@ -277,7 +280,6 @@ const ProjectCart = () => {
                 </div>
               ))}
             </div>
-            
 
             {/* Proje Silme ve Düzenleme Butonları */}
             <div className="mt-2 flex">
@@ -294,9 +296,10 @@ const ProjectCart = () => {
                 Sil
               </button>
             </div>
+            
           </div>
         ))}
-      </div>
+    </div>
     </div>
   );
 };

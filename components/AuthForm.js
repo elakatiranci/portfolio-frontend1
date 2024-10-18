@@ -1,20 +1,28 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+// import { useDispatch } from 'react-redux';
+// import { login } from '../features/user/userSlice';
 
 export default function AuthForm() {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(true); 
-  const [username, setUsername] = useState(""); 
-  const [password, setPassword] = useState(""); 
-  const [error, setError] = useState(""); 
+  const [isLogin, setIsLogin] = useState(true);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  // const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
+    setError(""); // Hata mesajını sıfırlıyoruz
 
     if (isLogin) {
       if (username === "admin" && password === "12345") {
-        alert("Giriş başarılı!");
-        router.push("/admin"); 
+        alert("Giriş başarılı! Admin paneline yönlendiriliyorsunuz.");
+        router.push("/admin");
+      } else if (username === "user" && password === "12345") {
+        alert("Giriş başarılı! Kullanıcı paneline yönlendiriliyorsunuz.");
+        router.push("/user");
       } else {
         setError("Kullanıcı adı veya şifre hatalı.");
       }
@@ -23,16 +31,52 @@ export default function AuthForm() {
     }
   };
 
+  /* if (isLogin) {
+    if (username === "admin" && password === "12345") {
+      dispatch(login({ username: "admin" })); // Kullanıcı bilgilerini Redux state'ine ekle
+      alert("Giriş başarılı!");
+      router.push("/admin"); 
+    } else if (username === "user" && password === "12345") {
+      dispatch(login({ username: "user" })); // Kullanıcı bilgilerini Redux state'ine ekle
+      alert("Giriş başarılı!");
+      router.push("/user");
+    } else {
+      setError("Kullanıcı adı veya şifre hatalı.");
+    }
+  } else {
+    alert("Kayıt işlemi henüz desteklenmiyor.");
+  }   */
+
   return (
-    <section className="h-screen bg-cover bg-center" style={{ backgroundImage: "url('https://fastly.picsum.photos/id/48/5000/3333.jpg?hmac=y3_1VDNbhii0vM_FN6wxMlvK27vFefflbUSH06z98so')" }}>
+    <section
+      className="h-screen bg-cover bg-center"
+      style={{
+        backgroundImage:
+          "url('https://fastly.picsum.photos/id/48/5000/3333.jpg?hmac=y3_1VDNbhii0vM_FN6wxMlvK27vFefflbUSH06z98so')",
+      }}
+    >
       <div className="absolute inset-0 bg-blue-950 opacity-50 backdrop-blur-lg"></div>
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 relative z-10 ">
-        <a href="#" className="flex items-center mb-6 text-4xl font-semibold text-pink-200 dark:text-white ">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="pink" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-cat ">
-            <path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/>
-            <path d="M8 14v.5"/>
-            <path d="M16 14v.5"/>
-            <path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/>
+        <a
+          href="#"
+          className="flex items-center mb-6 text-4xl font-semibold text-pink-200 dark:text-white "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="pink"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-cat "
+          >
+            <path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z" />
+            <path d="M8 14v.5" />
+            <path d="M16 14v.5" />
+            <path d="M11.25 16.25h1.5L12 17l-.75-.75Z" />
           </svg>
           Portfolio
         </a>
@@ -43,7 +87,10 @@ export default function AuthForm() {
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="username" className="block mb-2 text-sm font-medium dark:text-gray-900 text-white">
+                <label
+                  htmlFor="username"
+                  className="block mb-2 text-sm font-medium dark:text-gray-900 text-white"
+                >
                   Kullanıcı Adı
                 </label>
                 <input
@@ -57,7 +104,10 @@ export default function AuthForm() {
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block mb-2 text-sm font-medium dark:text-gray-900 text-white">
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium dark:text-gray-900 text-white"
+                >
                   Şifre
                 </label>
                 <input
@@ -73,7 +123,12 @@ export default function AuthForm() {
               {error && <p className="text-red-500">{error}</p>}
               <div className="flex items-center justify-between">
                 {isLogin && (
-                  <a href="#" className="text-sm font-medium text-gray-400 hover:underline dark:text-primary-500">Şifremi hatırlamıyorum.</a>
+                  <a
+                    href="#"
+                    className="text-sm font-medium text-gray-400 hover:underline dark:text-primary-500"
+                  >
+                    Şifremi hatırlamıyorum.
+                  </a>
                 )}
               </div>
               <button

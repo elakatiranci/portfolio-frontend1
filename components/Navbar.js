@@ -76,7 +76,7 @@ export default function Navbar() {
           </button>
           <button type="button" onClick={toggleDropdown} className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded={isDropdownOpen}>
             <span className="sr-only">Open user menu</span>
-            <Image className="w-8 h-8 rounded-full" src="/profile1.jpg" alt="user photo" width={32} height={32} />
+            <Image className="w-8 h-8 rounded-full" src="/user.png" alt="user photo" width={32} height={32} />
           </button>
 
           {/* Dropdown menu */}

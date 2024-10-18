@@ -101,7 +101,7 @@ const BlogUser = () => {
       <h2 className="text-2xl font-bold mb-4">Bloglar</h2>
       <div className="space-y-4">
         {blogs.map((blog) => (
-          <div key={blog._id} className="p-4 border rounded-lg shadow bg-white-100 dark:bg-gray-900 dark:text-white">
+          <div key={blog._id} className="p-4 border rounded-lg shadow bg-white-100 dark:bg-gray-900 text-black dark:text-white">
             <h3 className="text-lg font-semibold">{blog.title}</h3>
             <p className="text-gray-600">{blog.content}</p>
             <p className="text-sm text-gray-500">Yazar: {blog.author}</p>
@@ -161,7 +161,7 @@ const BlogUser = () => {
                     value={commentContent}
                     onChange={handleCommentChange}
                     placeholder="Yorumunuzu yazın..."
-                    className="flex-1 p-2 border rounded"
+                    className="flex-1 p-2 border rounded dark:text-black"
                     required
                   />
                   <button type="submit" className="ml-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Paylaş</button>

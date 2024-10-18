@@ -13,7 +13,8 @@ const BlogCart = () => {
   const [blogs, setBlogs] = useState([]);
   const [commentContent, setCommentContent] = useState('');
   const [editingBlog, setEditingBlog] = useState(null);
-  const [showCommentInput, setShowCommentInput] = useState({}); // Yorum alanının görünürlüğünü kontrol etmek için
+  const [showCommentInput, setShowCommentInput] = useState({});
+  const [showEditOptions, setShowEditOptions] = useState({}); // Üç nokta simgesi için durum
 
   useEffect(() => {
     fetchBlogs();
@@ -60,9 +61,9 @@ const BlogCart = () => {
       title: blog.title,
       content: blog.content,
       image: blog.image,
-      tags: blog.tags.join(', '), // Etiketleri virgülle ayırarak birleştir
+      tags: blog.tags.join(', '),
     });
-    setEditingBlog(blog._id); // Düzenleme moduna geç
+    setEditingBlog(blog._id);
   };
 
   const handleDelete = async (id) => {
@@ -92,7 +93,14 @@ const BlogCart = () => {
   const toggleCommentInput = (blogId) => {
     setShowCommentInput((prev) => ({
       ...prev,
-      [blogId]: !prev[blogId], // Yorum alanını aç/kapat
+      [blogId]: !prev[blogId],
+    }));
+  };
+
+  const toggleEditOptions = (blogId) => {
+    setShowEditOptions((prev) => ({
+      ...prev,
+      [blogId]: !prev[blogId],
     }));
   };
 
@@ -173,7 +181,7 @@ const BlogCart = () => {
                 onClick={async () => {
                   try {
                     await axios.put(`http://localhost:3001/api/blogs/${blog._id}/like`);
-                    fetchBlogs(); // Beğeni eklendikten sonra blog listesini yenile
+                    fetchBlogs();
                   } catch (error) {
                     console.error('Beğeni eklerken hata:', error.response.data);
                   }
@@ -219,7 +227,7 @@ const BlogCart = () => {
                     value={commentContent}
                     onChange={handleCommentChange}
                     placeholder="Yorumunuzu yazın..."
-                    className="flex-1 p-2 border rounded"
+                    className="flex-1 p-2 border rounded dark:text-black"
                     required
                   />
                   <button type="submit" className="ml-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Paylaş</button>

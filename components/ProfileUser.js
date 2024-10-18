@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ProfileUser() {
-  const [profileData, setProfileData] = useState({
+  const dispatch = useDispatch();
+  const profileData = useSelector(state => state.profileData);
+  
+  const [formData, setFormData] = useState({
     id: '',
     username: '',
     email: '',
@@ -9,7 +13,6 @@ export default function ProfileUser() {
     profileImage: '/default-profile.png',
   });
 
-  const [formData, setFormData] = useState({ ...profileData });
   const [users, setUsers] = useState([]); // Kullanıcıları tutacak state
 
   useEffect(() => {
@@ -29,7 +32,10 @@ export default function ProfileUser() {
 
     fetchUsers();
     document.documentElement.classList.add('dark');
-  }, []);
+    
+    // Profili Redux'dan yükle
+    setFormData({ ...profileData });
+  }, [profileData]); // profileData değiştiğinde güncellenir
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -59,7 +65,7 @@ export default function ProfileUser() {
     const data = await response.json();
     if (response.ok) {
       alert('Kullanıcı başarıyla kaydedildi!');
-      setProfileData(data);
+      dispatch({ type: 'SET_PROFILE_DATA', payload: data }); // Redux'a kaydet
       setFormData(data);
     } else {
       alert(data.message || 'Kullanıcı kaydı sırasında bir hata oluştu.');
@@ -80,7 +86,7 @@ export default function ProfileUser() {
 
     if (response.ok) {
       alert('Kullanıcı başarıyla güncellendi!');
-      setProfileData({ ...profileData, ...formData }); // Güncellenen bilgileri kaydet
+      dispatch({ type: 'SET_PROFILE_DATA', payload: formData }); // Redux'a güncelle
       setFormData({ ...formData, password: '' }); // Şifreyi sıfırla
     } else {
       console.error('Güncelleme hatası:', data);
@@ -116,16 +122,14 @@ export default function ProfileUser() {
 
     if (response.ok) {
       alert('Kullanıcı başarıyla silindi!');
-      // Silme işlemi sonrasında kullanıcıları tekrar yükle
-      const response = await fetch('http://localhost:3001/api/users');
-      // Formu sıfırla
+      dispatch({ type: 'REMOVE_PROFILE_DATA', payload: formData.id }); // Redux'dan sil
       setFormData({
         id: '',
         username: '',
         email: '',
         password: '',
         profileImage: '/default-profile.png',
-      });
+      }); // Formu sıfırla
     } else {
       alert(data.error || 'Kullanıcı silinirken bir hata oluştu.');
     }
@@ -193,20 +197,23 @@ export default function ProfileUser() {
         </dl>
       </div>
       <div className="px-4 py-3 text-right space-x-2">
-      <button
+        <button
           onClick={registerUser}
           className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-        >Kaydet
+        >
+          Kaydet
         </button>
         <button
           onClick={handleUpdate}
           className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-        >Güncelle
+        >
+          Güncelle
         </button>
         <button
           onClick={handleDelete}
           className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-        >Sil
+        >
+          Sil
         </button>
       </div>
     </div>

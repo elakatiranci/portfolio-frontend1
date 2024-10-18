@@ -1,14 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Profile() {
-  const [profileData, setProfileData] = useState({
-    id: '',
-    username: '',
-    email: '',
-    password: '',
-    profileImage: '/default-profile.png',
-  });
-
+  const dispatch = useDispatch();
+  const profileData = useSelector(state => state.profileData);
   const [formData, setFormData] = useState({ ...profileData });
   const [users, setUsers] = useState([]); // Kullanıcıları tutacak state
 
@@ -35,14 +30,10 @@ export default function Profile() {
     const file = e.target.files[0];
     if (file) {
       const imageURL = URL.createObjectURL(file);
-      setFormData({
-        ...formData,
-        profileImage: imageURL,
-      });
+      dispatch({ type: 'SET_PROFILE_IMAGE', payload: imageURL });
     }
   };
 
-  // Kullanıcı ekleme
   const registerUser = async () => {
     const response = await fetch('http://localhost:3001/api/users/register', {
       method: 'POST',
@@ -59,14 +50,13 @@ export default function Profile() {
     const data = await response.json();
     if (response.ok) {
       alert('Kullanıcı başarıyla kaydedildi!');
-      setProfileData(data);
+      dispatch({ type: 'SET_PROFILE_DATA', payload: data }); // Redux'a kaydet
       setFormData(data);
     } else {
       alert(data.message || 'Kullanıcı kaydı sırasında bir hata oluştu.');
     }
   };
 
-  // Kullanıcı güncelleme
   const handleUpdate = async () => {
     const response = await fetch(`http://localhost:3001/api/users/${formData.id}`, {
       method: 'PUT',
@@ -80,7 +70,7 @@ export default function Profile() {
 
     if (response.ok) {
       alert('Kullanıcı başarıyla güncellendi!');
-      setProfileData({ ...profileData, ...formData }); // Güncellenen bilgileri kaydet
+      dispatch({ type: 'SET_PROFILE_DATA', payload: formData }); // Redux'a güncelle
       setFormData({ ...formData, password: '' }); // Şifreyi sıfırla
     } else {
       console.error('Güncelleme hatası:', data);
@@ -95,7 +85,6 @@ export default function Profile() {
     });
   };
 
-  // Seçilen kullanıcının bilgilerini form alanlarına yükleyen fonksiyon
   const handleUserClick = (user) => {
     setFormData({
       id: user._id,
@@ -106,7 +95,6 @@ export default function Profile() {
     });
   };
 
-  // Kullanıcı silme
   const handleDelete = async () => {
     const response = await fetch(`http://localhost:3001/api/users/${formData.id}`, {
       method: 'DELETE',
@@ -116,9 +104,7 @@ export default function Profile() {
 
     if (response.ok) {
       alert('Kullanıcı başarıyla silindi!');
-      // Silme işlemi sonrasında kullanıcıları tekrar yükle
       const response = await fetch('http://localhost:3001/api/users');
-      // Formu sıfırla
       setFormData({
         id: '',
         username: '',
@@ -192,6 +178,8 @@ export default function Profile() {
           </div>
         </dl>
       </div>
+      <div>
+
       <div className="px-4 py-3 text-right space-x-2">
       <button
           onClick={registerUser}
@@ -210,9 +198,9 @@ export default function Profile() {
         </button>
       </div>
 
-      {/* Kullanıcı Listesi */}
+        {/* Kullanıcı Listesi */}
       <div className="mt-4">
-        <h3 className="ml-4 text-lg leading-6 font-medium text-gray-900">Kullanıcılar</h3>
+        <h3 className="ml-4 text-lg leading-6 font-medium text-gray-900 dark:text-white">Kullanıcılar</h3>
         <ul className="divide-y divide-gray-200">
           {users.map((user) => (
             <li key={user._id} className="ml-4 mr-2 py-4 cursor-pointer hover:bg-gray-100" onClick={() => handleUserClick(user)}>
@@ -220,6 +208,7 @@ export default function Profile() {
             </li>
           ))}
         </ul>
+      </div>
       </div>
     </div>
   );

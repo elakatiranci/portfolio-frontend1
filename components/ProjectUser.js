@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { setProjects, addProject, updateProject, deleteProject } from '../store'; // Redux store'dan import et
 
 const ProjectUser = () => {
-  const [formData, setFormData] = useState({
+  const dispatch = useDispatch();
+  const projects = useSelector((state) => state.projects.projects); // Redux'dan projeleri al
+  const [formData, setFormData] = React.useState({
     author: '',
     category: '',
     title: '',
@@ -12,10 +16,9 @@ const ProjectUser = () => {
     image: '',
     tags: '',
   });
-  const [projects, setProjects] = useState([]);
-  const [editingProject, setEditingProject] = useState(null);
-  const [comment, setComment] = useState(''); // Yorum için değişken
-  const [showCommentInput, setShowCommentInput] = useState({}); // Yorum alanını kontrol etmek için
+  const [editingProject, setEditingProject] = React.useState(null);
+  const [comment, setComment] = React.useState(''); // Yorum için değişken
+  const [showCommentInput, setShowCommentInput] = React.useState({}); // Yorum alanını kontrol etmek için
 
   useEffect(() => {
     fetchProjects();
@@ -25,7 +28,7 @@ const ProjectUser = () => {
   const fetchProjects = async () => {
     try {
       const response = await axios.get('http://localhost:3001/api/projects');
-      setProjects(response.data);
+      dispatch(setProjects(response.data)); // Redux'a projeleri yükle
     } catch (error) {
       console.error('Projeleri yüklerken hata:', error);
     }
@@ -57,13 +60,15 @@ const ProjectUser = () => {
     try {
       if (editingProject) {
         // Güncelleme işlemi
-        await axios.put(`http://localhost:3001/api/projects/${editingProject}`, formDataToSend);
+        const response = await axios.put(`http://localhost:3001/api/projects/${editingProject}`, formDataToSend);
+        dispatch(updateProject(response.data)); // Redux'da projeyi güncelle
         setEditingProject(null);
       } else {
         // Yeni proje ekleme işlemi
-        await axios.post('http://localhost:3001/api/projects', formDataToSend);
+        const response = await axios.post('http://localhost:3001/api/projects', formDataToSend);
+        dispatch(addProject(response.data)); // Redux'da yeni projeyi ekle
       }
-      fetchProjects();
+      fetchProjects(); // Projeleri yenile
       setFormData({
         author: '',
         category: '',
@@ -96,6 +101,7 @@ const ProjectUser = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:3001/api/projects/${id}`);
+      dispatch(deleteProject(id)); // Redux'da projeyi sil
       fetchProjects();
     } catch (error) {
       console.error('Proje silerken hata:', error);
@@ -178,17 +184,17 @@ const ProjectUser = () => {
                 Yorum
               </button>
               <span className="ml-2 text-sm text-gray-500">{project.comments.length} Yorum</span>
-              </div>
+            </div>
 
-              {showCommentInput[project._id] && (
-                <div className="mt-4">
-                  <form onSubmit={(e) => handleCommentSubmit(project._id, e)} className="flex items-center">
+            {showCommentInput[project._id] && (
+              <div className="mt-4">
+                <form onSubmit={(e) => handleCommentSubmit(project._id, e)} className="flex items-center">
                   <input
                     type="text"
                     value={comment}
                     onChange={handleCommentChange}
                     placeholder="Yorumunuzu yazın..."
-                    className="flex-1 p-2 border rounded"
+                    className="flex-1 p-2 border rounded dark:text-black"
                     required
                   />
                   <button type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 ml-2">
@@ -196,8 +202,9 @@ const ProjectUser = () => {
                   </button>
                 </form>
                 </div>
-              )}
-              {/* Yorumları Listele */}
+            )}
+
+            {/* Yorumları Listele */}
             <div className="mt-4">
               {project.comments.map((comment) => (
                 <div key={comment._id} className="p-2 border-b">
@@ -208,6 +215,8 @@ const ProjectUser = () => {
           </div>
         ))}
       </div>
+
+      
     </div>
   );
 };
