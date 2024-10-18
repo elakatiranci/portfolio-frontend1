@@ -17,6 +17,7 @@ const BlogUser = () => {
 
   useEffect(() => {
     fetchBlogs();
+    document.documentElement.classList.add('dark');
   }, []);
 
   const fetchBlogs = async () => {
@@ -100,7 +101,7 @@ const BlogUser = () => {
       <h2 className="text-2xl font-bold mb-4">Bloglar</h2>
       <div className="space-y-4">
         {blogs.map((blog) => (
-          <div key={blog._id} className="p-4 border rounded-lg shadow bg-white-100">
+          <div key={blog._id} className="p-4 border rounded-lg shadow bg-white-100 dark:bg-gray-900 dark:text-white">
             <h3 className="text-lg font-semibold">{blog.title}</h3>
             <p className="text-gray-600">{blog.content}</p>
             <p className="text-sm text-gray-500">Yazar: {blog.author}</p>

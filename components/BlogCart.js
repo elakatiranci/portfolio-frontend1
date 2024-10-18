@@ -17,6 +17,7 @@ const BlogCart = () => {
 
   useEffect(() => {
     fetchBlogs();
+    document.documentElement.classList.add('dark');
   }, []);
 
   const fetchBlogs = async () => {
@@ -98,7 +99,7 @@ const BlogCart = () => {
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Blog Paylaşım Alanı</h1>
-      <form onSubmit={handleSubmit} className="mb-8 p-6 border rounded-lg shadow-lg bg-white">
+      <form onSubmit={handleSubmit} className="mb-8 p-6 border rounded-lg shadow-lg bg-white dark:bg-gray-900">
         <input
           type="text"
           name="author"
@@ -158,7 +159,7 @@ const BlogCart = () => {
       <h2 className="text-2xl font-bold mb-4">Bloglar</h2>
       <div className="space-y-4">
         {blogs.map((blog) => (
-          <div key={blog._id} className="p-4 border rounded-lg shadow bg-white-100">
+          <div key={blog._id} className="p-4 border rounded-lg shadow bg-white-100 dark:bg-gray-900 dark:text-white">
             <h3 className="text-lg font-semibold">{blog.title}</h3>
             <p className="text-gray-600">{blog.content}</p>
             <p className="text-sm text-gray-500">Yazar: {blog.author}</p>

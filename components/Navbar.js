@@ -45,13 +45,13 @@ export default function Navbar() {
     <nav className={`bg-white border-gray-200 dark:bg-gray-900 rounded-lg shadow px-6 m-4 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-6">
         <a href="#" className="flex items-center space-x-2 rtl:space-x-reverse">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-cat">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="pink" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-cat">
             <path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z" />
             <path d="M8 14v.5" />
             <path d="M16 14v.5" />
             <path d="M11.25 16.25h1.5L12 17l-.75-.75Z" />
           </svg>
-          <span className="font-bold self-center text-3xl whitespace-nowrap dark:text-white">Proto</span>
+          <span className="font-bold self-center text-3xl whitespace-nowrap dark:text-pink-200 text-pink-300">Proto</span>
         </a>
         <div className="flex items-center md:order-2 space-x-5 md:space-x-4 rtl:space-x-reverse">
           {/* Dark mode toggle icon */}
@@ -69,7 +69,7 @@ export default function Navbar() {
                 <path d="m19.1 4.9-1.4 1.4" />
               </svg>
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-moon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-moon">
                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
               </svg>
             )}

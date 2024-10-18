@@ -28,6 +28,7 @@ export default function Profile() {
     };
 
     fetchUsers();
+    document.documentElement.classList.add('dark');
   }, []);
 
   const handleImageChange = (e) => {
@@ -131,9 +132,9 @@ export default function Profile() {
   };
 
   return (
-    <div className="bg-white overflow-hidden shadow rounded-lg border max-w-lg mx-auto">
+    <div className="bg-white overflow-hidden shadow rounded-lg border max-w-lg mx-auto dark:bg-gray-900 dark:text-white">
       <div className="px-4 py-5 sm:px-6 text-center">
-        <h3 className="text-lg leading-6 font-medium text-gray-900">Kullanıcı Profili</h3>
+        <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white">Kullanıcı Profili</h3>
         
         {/* Profile Image Section */}
         <div className="mt-4">

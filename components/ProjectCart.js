@@ -19,6 +19,7 @@ const ProjectCart = () => {
 
   useEffect(() => {
     fetchProjects();
+    document.documentElement.classList.add('dark');
   }, []);
 
   const fetchProjects = async () => {
@@ -126,7 +127,7 @@ const ProjectCart = () => {
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Proje Paylaşım Alanı</h1>
-      <form onSubmit={handleSubmit} className="mb-8 p-6 border rounded-lg shadow-lg bg-white">
+      <form onSubmit={handleSubmit} className="mb-8 p-6 border rounded-lg shadow-lg bg-white dark:bg-gray-900 dark:text-white">
         <input
           type="text"
           name="author"
@@ -200,7 +201,7 @@ const ProjectCart = () => {
       <h2 className="text-xl font-bold mb-4">Projeler</h2>
       <div className="space-y-4">
         {projects.map((project) => (
-          <div key={project._id} className="p-4 border rounded-lg shadow bg-white-100">
+          <div key={project._id} className="p-4 border rounded-lg shadow bg-white-100 dark:bg-gray-900 dark:text-white">
             <h3 className="text-lg font-semibold">{project.title}</h3>
             <p className="text-gray-600">{project.content}</p>
             <p className="text-sm text-gray-500">Yazar: {project.author}</p>

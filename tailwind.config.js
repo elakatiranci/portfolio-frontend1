@@ -8,5 +8,8 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+
+  lightMode: 'media',
+  darkMode: 'class',
 }
 

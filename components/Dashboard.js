@@ -77,6 +77,7 @@ const fetchLikes = async () => {
     fetchUsers();
     fetchComments();
     fetchLikes();
+    document.documentElement.classList.add('dark');
   }, []);
 
   return (
@@ -84,7 +85,7 @@ const fetchLikes = async () => {
       <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
 
       {/* Kullanıcılar Kartı */}
-<div className="bg-white shadow-lg rounded-lg p-6 mb-6">
+<div className="bg-white shadow-lg rounded-lg p-6 mb-6 dark:bg-gray-900 dark:text-white">
   <h2 className="text-2xl font-bold">Kullanıcılar</h2>
   <ul>
     {users.map(user => (
@@ -108,7 +109,7 @@ const fetchLikes = async () => {
 
 
       {/* Yorumlar Kartı */}
-      <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
+      <div className="bg-white shadow-lg rounded-lg p-6 mb-6 dark:bg-gray-900 dark:text-white">
         <h2 className="text-2xl font-bold">Yorumlar</h2>
         <ul>
           {comments.map(comment => (
@@ -134,7 +135,7 @@ const fetchLikes = async () => {
       </div>
 
        {/* Beğeniler Kartı */}
-       <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
+       <div className="bg-white shadow-lg rounded-lg p-6 mb-6 dark:bg-gray-900 dark:text-white">
         <h2 className="text-2xl font-bold">Beğeniler</h2>
         <ul>
           {likes.map(like => (
