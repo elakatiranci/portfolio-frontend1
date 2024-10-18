@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function Profile() {
+export default function ProfileUser() {
   const [profileData, setProfileData] = useState({
     id: '',
     username: '',
@@ -207,18 +207,6 @@ export default function Profile() {
           className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
         >Sil
         </button>
-      </div>
-
-      {/* Kullanıcı Listesi */}
-      <div className="mt-4">
-        <h3 className="ml-4 text-lg leading-6 font-medium text-gray-900">Kullanıcılar</h3>
-        <ul className="divide-y divide-gray-200">
-          {users.map((user) => (
-            <li key={user._id} className="ml-4 mr-2 py-4 cursor-pointer hover:bg-gray-100" onClick={() => handleUserClick(user)}>
-               User name: <strong>{user.username}</strong> - Mail: <strong>{user.email}</strong>
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
-import BlogCart from "@/components/BlogCart";
-import Navbar from "@/components/Navbar";
+import ProjectUser from "@/components/ProjectUser";
+import NavbarUser from "@/components/NavbarUser";
 import Footer from "@/components/Footer";
 
 export default function BlogPage() {
   return (
     <div>
-      <Navbar />
-        <BlogCart/>
+      <NavbarUser />
+        <ProjectUser/>
         <div className="mt-14"> 
         </div>
         <Footer />

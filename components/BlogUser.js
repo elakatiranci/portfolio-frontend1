@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const BlogCart = () => {
+const BlogUser = () => {
   const [formData, setFormData] = useState({
     author: '',
     category: '',
@@ -97,64 +97,6 @@ const BlogCart = () => {
 
   return (
     <div className="max-w-3xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Blog Paylaşım Alanı</h1>
-      <form onSubmit={handleSubmit} className="mb-8 p-6 border rounded-lg shadow-lg bg-white">
-        <input
-          type="text"
-          name="author"
-          placeholder="Yazar"
-          value={formData.author}
-          onChange={handleChange}
-          className="w-full p-2 mb-4 border rounded"
-          required
-        />
-        <input
-          type="text"
-          name="category"
-          placeholder="Kategori"
-          value={formData.category}
-          onChange={handleChange}
-          className="w-full p-2 mb-4 border rounded"
-          required
-        />
-        <input
-          type="text"
-          name="title"
-          placeholder="Başlık"
-          value={formData.title}
-          onChange={handleChange}
-          className="w-full p-2 mb-4 border rounded"
-          required
-        />
-        <textarea
-          name="content"
-          placeholder="İçerik"
-          value={formData.content}
-          onChange={handleChange}
-          className="w-full p-2 mb-4 border rounded h-32"
-          required
-        />
-        <input
-          type="text"
-          name="image"
-          placeholder="Görsel URL"
-          value={formData.image}
-          onChange={handleChange}
-          className="w-full p-2 mb-4 border rounded"
-        />
-        <input
-          type="text"
-          name="tags"
-          placeholder="Etiketler (virgülle ayırın)"
-          value={formData.tags}
-          onChange={handleChange}
-          className="w-full p-2 mb-4 border rounded"
-        />
-        <button type="submit" className="w-40 p-2 justify-between bg-blue-500 text-white rounded hover:bg-blue-600">
-          {editingBlog ? 'Blogu Güncelle' : 'Blogu Ekle'}
-        </button>
-      </form>
-
       <h2 className="text-2xl font-bold mb-4">Bloglar</h2>
       <div className="space-y-4">
         {blogs.map((blog) => (
@@ -234,21 +176,6 @@ const BlogCart = () => {
                 </div>
               ))}
             </div>
-
-            <div className="mt-2 flex">
-              <button
-                onClick={() => handleEdit(blog)}
-                className="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600 mr-2"
-              >
-                Düzenle
-              </button>
-              <button
-                onClick={() => handleDelete(blog._id)}
-                className="bg-red-500 text-white p-2 rounded hover:bg-red-600"
-              >
-                Sil
-              </button>
-            </div>
           </div>
         ))}
       </div>
@@ -256,4 +183,4 @@ const BlogCart = () => {
   );
 };
 
-export default BlogCart;
+export default BlogUser;
