@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { setProjects, addProject, updateProject, deleteProject } from '../store'; // Redux store'dan import et
+import { setProjects, addProject, updateProject, deleteProject } from '../redux/slice/projectSlice'; // Redux store'dan import et
 
 const ProjectUser = () => {
   const dispatch = useDispatch();

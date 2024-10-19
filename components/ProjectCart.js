@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { setProjects } from '../store';
+import { setProjects } from '../redux/slice/projectSlice';
 
 const ProjectCart = () => {
   const dispatch = useDispatch();

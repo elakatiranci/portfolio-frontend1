@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUsers, setComments, setLikes } from '../store';
+import { setUsers, setComments, setLikes } from '../redux/slice/appSlice';
 import { useRouter } from 'next/router';
 
 const Dashboard = () => {
